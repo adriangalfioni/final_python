@@ -86,10 +86,16 @@ class mailSenderWithImg:
 info_sensores = sensores()
 
 dir_img = "/storage/emulated/0/com.hipipal.qpyplus/scripts/"
-to_Addr = 'adrian.galfioni@gmail.com'
+#to_Addr = 'adrian.galfioni@gmail.com'
 from_Addr = 'pruebasdisse@gmail.com'
 pass_Addr = 'pruebas123'
 contador = 1
+
+to_Addr = raw_input("Ingrese su email (debe utilizar gmail) \n")
+
+while (len(to_Addr) == 0 or to_Addr.count('@') == 0):
+    to_Addr = raw_input("email incorrecto, vuelva a ingresar (debe utilizar gmail) \n")
+
 while True:    
 
     print "Mandando Email numero =" + str(contador) + "\n"    
