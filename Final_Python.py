@@ -7,7 +7,7 @@
 __author__ = "IT10"
 __date__ = "$25/09/2015 16:23:09$"
 
-#Libreria para android y  comunicacion con sensores
+# Libreria para android y  comunicacion con sensores
 import androidhelper as android
 import time
 
@@ -16,6 +16,9 @@ import smtplib
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+# Libreria para obtener información sobre los objetos
+from pydoc import help
 
 ##########################################################################################################    
 
@@ -41,46 +44,69 @@ class sensores(object):
 class mailSenderWithImg:
     
     def __init__(self, userName, password):
+        """
+        Default mailSenderWithImg's constructor
+        Set from address info and create message object
+        """
         self.userName = userName
         self.password = password
         set_fromAddr(userName)
         self.msg = MIMEMultipart()
         
+
+    """
+    SETTERS
+    """
+
     def set_fromAddr(self, fromAddr):
         self.fromAddr = fromAddr
         
     def set_toAddr(self, toAddr):
         self.toAddr = toAddr
+
+    """
+    GETTERS
+    """
         
     def get_fromAddr(self):
         return self.fromAdrr
     
     def get_toAddr(self):
         return self.toAdrr
-        
+     
+
+
     def msgWithText(self, subject, text):
-        
+        """
+        Set subject, message's body text and from and to address 
+        """
         self.msg['subject'] = subject
         self.msg['from'] = self.fromAddr
         self.msg['to'] = self.toAddr
         self.msg.attach(MIMEText(text))
         
     def msgWithImg(self, path):
-        
+        """
+        Set message's image from path 
+        """
         fp = open(path, 'rb')
         msgImg = MIMEImage(fp.read())
         fp.close()
         self.msg.attach(msgImg)
         
-    def sendMail(self):    
+    def sendMail(self):
+        """
+        Try to connect with server, login and send email
+        In case of error print send error
+        """    
         try:
             server = smtplib.SMTP_SSL('smtp.gmail.com:465')
             server.login(self.userName,self.password)
             server.sendmail(self.fromAddr, self.toAddr, self.msg.as_string())
             server.quit()
-            print "Mensaje enviado correctamente a ", self.toAddr , "\n" 
+            print "Message successful send to ", self.toAddr , "\n" 
         except Exception,e:
-            print "Error en el envío!\n",e
+            print "Send error!\n",e
 
 #fin clase sendMailwithImg        
 
@@ -118,7 +144,7 @@ while True:
     sender.msgWithText('DISSE Proyect Msg',text_email)
     sender.msgWithImg( dir_img + "logo.png")
     sender.sendMail()
-    
+
     print "Esperando proxima iteracion \n"    
    
     time.sleep(40) #se predispone un ciclo de 40 segundos debido a que la suma de este tiempo con el refrezco del GPS suma un total de 1 min    
