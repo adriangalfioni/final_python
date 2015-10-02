@@ -43,6 +43,7 @@ class mailSenderWithImg:
     def __init__(self, userName, password):
         self.userName = userName
         self.password = password
+        set_fromAddr(userName)
         self.msg = MIMEMultipart()
         
     def set_fromAddr(self, fromAddr):
@@ -86,7 +87,6 @@ class mailSenderWithImg:
 info_sensores = sensores()
 
 dir_img = "/storage/emulated/0/com.hipipal.qpyplus/scripts/"
-#to_Addr = 'adrian.galfioni@gmail.com'
 from_Addr = 'pruebasdisse@gmail.com'
 pass_Addr = 'pruebas123'
 contador = 1
@@ -96,9 +96,12 @@ to_Addr = raw_input("Ingrese su email (debe utilizar gmail) \n")
 while (len(to_Addr) == 0 or to_Addr.count('@') == 0):
     to_Addr = raw_input("email incorrecto, vuelva a ingresar (debe utilizar gmail) \n")
 
+sender = mailSenderWithImg(from_Addr, pass_Addr)
+sender.set_toAddr(to_Addr)
+
 while True:    
 
-    print "Mandando Email numero =" + str(contador) + "\n"    
+    print "Mandando Email numero = " + str(contador) + "\n"    
     contador = contador +1
 
     print "Lectura de sensores en proceso ... \n" 
@@ -112,12 +115,10 @@ while True:
    
     text_email = "Latitud gps = " + str(rnet["latitude"]) + "\n" + "Longitud gps = " + str(rnet["longitude"]) + "\n" + "Operador ="+ str(operador[1]) + "\n"+ "Datos WIFI = "+ str(wifi[1])+ "\n"    
     
-    sender = mailSenderWithImg(from_Addr, pass_Addr)
-    sender.set_fromAddr(from_Addr)
-    sender.set_toAddr(to_Addr)
     sender.msgWithText('DISSE Proyect Msg',text_email)
     sender.msgWithImg( dir_img + "logo.png")
     sender.sendMail()
+    
     print "Esperando proxima iteracion \n"    
    
     time.sleep(40) #se predispone un ciclo de 40 segundos debido a que la suma de este tiempo con el refrezco del GPS suma un total de 1 min    
