@@ -58,7 +58,7 @@ class mailSenderWithImg:
         """
         self.userName = userName
         self.password = password
-        set_fromAddr(userName)
+        self.set_fromAddr(userName)
         self.msg = MIMEMultipart()
         
 
@@ -112,9 +112,9 @@ class mailSenderWithImg:
             server.login(self.userName,self.password)
             server.sendmail(self.fromAddr, self.toAddr, self.msg.as_string())
             server.quit()
-            print "Message successful send to ", self.toAddr , "\n" 
+            print "Mensaje enviado correctamente a ", self.toAddr , "\n" 
         except Exception,e:
-            print "Send error!\n",e
+            print "Error enviando mensaje!\n",e
 
 #end sendMailwithImg        
 ####################################################################################################################
@@ -150,8 +150,8 @@ while True:
     print "Lectura de Sensores Exitosa \n"    
    
     text_email = "Latitud gps = " + str(rnet["latitude"]) + "\n" + "Longitud gps = " + str(rnet["longitude"]) + "\n" + "Operador ="+ str(operador[1]) + "\n"+ "Datos WIFI = "+ str(wifi[1])+ "\n"    
-    
-    sender.msgWithText('DISSE Proyect Msg',text_email)
+    subject_email = "Report_"+time.strftime('%d-%m-%Y %H:%M:%S')
+    sender.msgWithText(subject_email,text_email)
     sender.msgWithImg( dir_img + "logo.png")
     sender.sendMail()
 
