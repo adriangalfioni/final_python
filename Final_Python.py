@@ -1,23 +1,15 @@
 #!-*- coding:utf-8 -*-
 
-# To change this license header, choose License Headers in Project Properties.
-# To change this template file, choose Tools | Templates
-# and open the template in the editor.
-
 __author__ = "IT10"
 __date__ = "$25/09/2015 16:23:09$"
 
-# Libreria para android y  comunicacion con sensores
+##########################################################################################################
 import androidhelper as android
 import time
-
-# Librerias para el tratamiento del Email 
 import smtplib
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
-# Libreria para obtener información sobre los objetos
 from pydoc import help
 
 ##########################################################################################################    
@@ -25,22 +17,38 @@ from pydoc import help
 class sensores(object):
     
     def __init__(self):
+        """
+        Default sensores's constructor
+        Create object sensores to get information of device's sensors.
+        """
         self.droid = android.Android()    
         
     def get_info_wifi(self):
+        """
+        get_info_wifi(self)
+        Returns information about the currently active access point.
+        """
         return  self.droid.wifiGetConnectionInfo()
 
     def get_info_operador(self):
+        """
+        get_info_operador(self) 
+        Returns the Service Provider Name (SPN).
+        """
         return self.droid.getSimOperatorName()
     
     def get_info_gps(self):
+        """
+        get_info_gps(self)
+        Returns the current location as indicated by all available providers.
+        """
         self.droid.startLocating()
         time.sleep(20)
         self.gps = self.droid.readLocation()
         return  self.gps.result               
         
-# Fin de clase sensores 
-
+# End sensores 
+###############################################################################################
 class mailSenderWithImg:
     
     def __init__(self, userName, password):
@@ -108,7 +116,9 @@ class mailSenderWithImg:
         except Exception,e:
             print "Send error!\n",e
 
-#fin clase sendMailwithImg        
+#end sendMailwithImg        
+####################################################################################################################
+# Begin principal structure
 
 info_sensores = sensores()
 
@@ -147,6 +157,6 @@ while True:
 
     print "Esperando proxima iteracion \n"    
    
-    time.sleep(40) #se predispone un ciclo de 40 segundos debido a que la suma de este tiempo con el refrezco del GPS suma un total de 1 min    
+    time.sleep(40) #Predisposes one cycle of 40 seconds, because this time with the GPS-location is equal to one minute.
 
-#repeticion cada 60 segundos        
+# repeat for each 60 seconds        
